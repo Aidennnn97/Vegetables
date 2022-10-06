@@ -3,16 +3,21 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const session = require('express-session');
+var oracledb = require('oracledb');
+oracledb.autoCommit = true;
 
 // 1. 라우터 경로
 var indexRouter = require('./routes/index');
-var homeRouter = require('./routes/home');
-var usersRouter = require('./routes/users');
-var registerRouter = require('./routes/register');
-var listRouter = require('./routes/list');
-var detailRouter = require('./routes/detail');
-var profileRouter = require('./routes/profile');
-var paymentRouter = require('./routes/payment');
+var homeRouter = require('./routes/user/home');
+var adminRouter = require('./routes/admin/main');
+var loginRouter = require('./routes/login');
+var joinRouter = require('./routes/join');
+var registerRouter = require('./routes/user/register');
+var listRouter = require('./routes/user/list');
+var detailRouter = require('./routes/user/detail');
+var profileRouter = require('./routes/user/profile');
+var paymentRouter = require('./routes/user/payment');
 
 var app = express();
 
@@ -26,6 +31,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 세션 설정
+app.use( // request를 통해 세션 접근 가능 ex) req.session
+  session({
+    // key: "loginData",
+    secret: "keyboard cat", // 반드시 필요한 옵션. 세션을 암호화해서 저장함
+    resave: false, // 세션 변경되지 않아도 계속 저장됨. 기본값은 true지만 false로 사용 권장
+    saveUninitialized: true, // 세션을 초기값이 지정되지 않은 상태에서도 강제로 저장. 모든 방문자에게 고유 식별값 주는 것.
+    cookie: {
+      maxAge: 3600000
+    },
+    rolling: true
+    // store: new MYSQLStore(connt),
+  })
+);
+
 // 2. 사용할 페이지경로 설정(routes폴더 파일)  3. js파일 만들고 값을 ejs로 던져줌
 app.use('/', indexRouter);
 app.use('/home', homeRouter);
@@ -34,7 +54,9 @@ app.use('/list', listRouter);
 app.use('/detail', detailRouter);
 app.use('/profile', profileRouter);
 app.use('/payment', paymentRouter);
-app.use('/users', usersRouter);
+app.use('/login', loginRouter);
+app.use('/join', joinRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
