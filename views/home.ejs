@@ -173,19 +173,28 @@
                   <table class="table table-borderless">
                     <thead>
                       <tr>
+                        <th scope="col">#</th>
                         <th scope="col">이미지</th>
                         <th scope="col">상품명</th>
                         <th scope="col">가격</th>
-                        <th scope="col">수량</th>
+                        <th scope="col">수량 / KG</th>
                       </tr>
                     </thead>
                     <tbody>
+                      <% data.forEach((el, key)=>{
+                        if(key <= 4){
+                      %>
                       <tr>
-                        <th scope="row"><a href="#"><img src="../assets/img/product-1.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Ut inventore ipsa voluptas nulla</a></td>
-                        <td>$64</td>
-                        <td class="fw-bold">124</td>
+                        <th scope="row"><%= key + 1 %></th>
+                        <td><a href="#"><img src="../assets/img/product-1.jpg" alt=""></a></td>
+                        <td><a href="#" class="text-primary fw-bold"><%= el.PRODUCT_NAME %> </a></td>
+                        <td><%= el.PRODUCT_PRICE %>원</td>
+                        <td class="fw-bold"><%= el.PRODUCT_CNT %> / KG</td>
                       </tr>
+                      <% 
+                          }
+                        }) 
+                      %>
                     </tbody>
                   </table>
 
