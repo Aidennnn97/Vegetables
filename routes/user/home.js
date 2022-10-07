@@ -6,7 +6,7 @@ const {
 } = require("../../config/db");
 
 
-//select
+//인기상품
 async function selectHotProduct() {
 
     let connection = await oracledb.getConnection(ORACLE_CONFIG);
@@ -26,6 +26,7 @@ async function selectHotProduct() {
     return result.rows;
 }
 
+//실시간등록상품
 async function selectLiveProduct() {
 
   let connection = await oracledb.getConnection(ORACLE_CONFIG);
@@ -45,10 +46,33 @@ async function selectLiveProduct() {
   return result.rows;
 }
 
+//유저정보
+async function selectUserInfo() {
+
+  let connection = await oracledb.getConnection(ORACLE_CONFIG);
+
+  let binds = {};
+  let options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
+    };
+  var sql = "SELECT member_name, member_addr1, member_addr2, member_addr1 ||' '||member_addr2 AS full_addr FROM member";
+
+  let result = await connection.execute(sql, binds, options);
+
+  // console.log(result.rows);
+  
+  await connection.close();
+  
+  return result;
+}
+
 router.get('/', async function(req, res, next) {
+  const userId = req.session.user.sessionId;
+  console.log(userId);
   hotProduct = await selectHotProduct();
   liveProduct = await selectLiveProduct();
-  res.render('home', { hot: hotProduct, live: liveProduct });
+  userInfo = await selectUserInfo();
+  res.render('home', { hot: hotProduct, live: liveProduct, user: userInfo, userId: userId });
 });
 
 module.exports = router;
