@@ -181,7 +181,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% data.forEach((el, key)=>{
+                      <% hot.forEach((el, key)=>{
                         if(key <= 4){
                       %>
                       <tr>
@@ -215,14 +215,23 @@
             <div class="card-body pb-0">
               <h5 class="card-title">실시간 등록 상품 <span>| Today</span></h5>
 
+              <%
+              live.forEach((el, key)=>{ 
+                if(key <= 4){
+              %>
               <div class="news">
+
                 <div class="post-item clearfix">
                   <img src="../assets/img/news-1.jpg" alt="">
-                  <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
-                  <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
+                  <h4><a href="#"><%=el.PRODUCT_NAME%></a></h4>
+                  <p><%=el.PRODUCT_CONTENT%></p>
                 </div>
-              </div><!-- End sidebar recent posts-->
-
+    
+              </div><br/><!-- End sidebar recent posts-->
+              <% 
+                }
+              }) 
+              %>
             </div>
           </div><!-- End News & Updates -->
 
