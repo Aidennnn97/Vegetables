@@ -47,7 +47,7 @@ async function selectLiveProduct() {
 }
 
 //유저정보
-async function selectUserInfo() {
+async function selectMemberInfo(userId) {
 
   let connection = await oracledb.getConnection(ORACLE_CONFIG);
 
@@ -55,24 +55,23 @@ async function selectUserInfo() {
   let options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
-  var sql = "SELECT member_name, member_addr1, member_addr2, member_addr1 ||' '||member_addr2 AS full_addr FROM member";
+  var sql = "SELECT member_name, member_addr1, member_addr2, member_addr1 ||' '||member_addr2 AS full_addr FROM member WHERE member_id = '" + userId + "'";
 
   let result = await connection.execute(sql, binds, options);
 
-  // console.log(result.rows);
+  //console.log(result.rows);
   
   await connection.close();
   
-  return result;
+  return result.rows[0];
 }
 
 router.get('/', async function(req, res, next) {
   const userId = req.session.user.sessionId;
-  console.log(userId);
   hotProduct = await selectHotProduct();
   liveProduct = await selectLiveProduct();
-  userInfo = await selectUserInfo();
-  res.render('home', { hot: hotProduct, live: liveProduct, user: userInfo, userId: userId });
+  memberInfo = await selectMemberInfo(userId);
+  res.render('home', { hot: hotProduct, live: liveProduct, member: memberInfo });
 });
 
 module.exports = router;

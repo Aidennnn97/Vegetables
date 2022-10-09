@@ -70,13 +70,13 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="../assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><%= userId %> </span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><%= member.MEMBER_NAME %> </span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>사용자이름</h6>
-              <span>경상북도 경산시 하양읍</span>
+              <h6><%= member.MEMBER_NAME %></h6>
+              <span><%= member.FULL_ADDR %></span>
             </li>
             <li>
               <hr class="dropdown-divider">

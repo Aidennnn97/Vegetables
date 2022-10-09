@@ -7,8 +7,8 @@ const home = require('./user/home.js');
 const adminMain = require('./admin/main.js');
 
 router.use('/', (req,res,next) => {
-    if(req.url == '/' || req.url == '/login') {
-        // console.log("세션 검사 하지않고 로그인페이지로")
+    if(req.url == '/' || req.url == '/login' || req.url =='/join') {
+        // console.log("세션 검사 하지않고 이동가능 페이지")
         next();
     } else {   // 로그인 페이지 이외의 페이지에 진입하려고 하는 경우
         if(req.session.user) {

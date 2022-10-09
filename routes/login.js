@@ -26,8 +26,8 @@ router.get('/', (req, res) => {
 router.post('/login', async (req, res) => {
   const auth = req.body.userId;
   result = await selectDatabase();
-  console.log(result[0].MEMBER_ID)
-  console.log(auth)
+  // console.log(result[0].MEMBER_ID)
+  // console.log(auth)
   if (auth == result[0].MEMBER_ID) {
       if (req.session.user) {
           res.redirect('/user/home');
