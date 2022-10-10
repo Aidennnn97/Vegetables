@@ -14,7 +14,7 @@ async function insertProductInfo(prdtName, prdtContent, prdtCnt, prdtPrice, prdt
   let options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
-  var sql = "INSERT INTO product(member_id, member_pwd, member_name, member_addr1, member_addr2) VALUES('" + prdtName + "','" + prdtContent + "','" + prdtCnt + "','" + prdtPrice + "','" + prdtDate + "')";
+  var sql = "INSERT INTO product(product_name, product_content, product_cnt, product_price, product_date) VALUES('" + prdtName + "','" + prdtContent + "','" + prdtCnt + "','" + prdtPrice + "','" + prdtDate + "')";
 
   let result = await connection.execute(sql, binds, options);
 
@@ -33,7 +33,7 @@ async function insertImgInfo(prdtImg1, prdtImg2, prdtImg3, prdtImg4) {
   let options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
-  var sql = "INSERT INTO product(member_id, member_pwd, member_name, member_addr1, member_addr2) VALUES('" + prdtImg1 + "','" + prdtImg2 + "','" + prdtImg3 + "','" + prdtImg4 + "')";
+  var sql = "INSERT INTO img(member_id, member_pwd, member_name, member_addr1, member_addr2) VALUES('" + prdtImg1 + "','" + prdtImg2 + "','" + prdtImg3 + "','" + prdtImg4 + "')";
 
   let result = await connection.execute(sql, binds, options);
 
