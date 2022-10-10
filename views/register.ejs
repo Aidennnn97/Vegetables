@@ -165,59 +165,48 @@
               <h5 class="card-title">등록할 상품의 정보를 입력하세요</h5>
 
               <!-- General Form Elements -->
-              <form>
+              <form method="post">
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-2 col-form-label">상품명</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control">
+                    <input name="prdtName" type="text" class="form-control">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="inputPassword" class="col-sm-2 col-form-label">상품내용</label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" style="height: 100px"></textarea>
+                    <textarea name="prdtContent" class="form-control" style="height: 100px"></textarea>
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">수량/KG</label>
                   <div class="col-sm-10">
-                    <input type="number" class="form-control">
+                    <input name="prdtCnt" type="number" class="form-control">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-2 col-form-label">가격</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control">
+                    <input name="prdtPrice" type="text" class="form-control">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="inputDate" class="col-sm-2 col-form-label">수확일</label>
                   <div class="col-sm-10">
-                    <input type="date" class="form-control">
+                    <input name="prdtDate" type="date" class="form-control">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">사진1</label>
                   <div class="col-sm-10">
-                    <input class="form-control" type="file" id="formFile">
+                    <input name="prdtImg1" class="form-control" type="file" id="formFile" accept="image/*" multiple="multiple">
                   </div>
-                  <label for="inputNumber" class="col-sm-2 col-form-label">사진2</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" type="file" id="formFile">
-                  </div>
-                  <label for="inputNumber" class="col-sm-2 col-form-label">사진3</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" type="file" id="formFile">
-                  </div>
-                  <label for="inputNumber" class="col-sm-2 col-form-label">사진4</label>
-                  <div class="col-sm-10">
-                    <input class="form-control" type="file" id="formFile">
-                  </div>
+                  
                 </div>
                 
                 <div class="row mb-3">
