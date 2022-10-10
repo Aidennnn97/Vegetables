@@ -1,27 +1,26 @@
-var http = require('http');
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-var logger = require('morgan');
+const logger = require('morgan');
 const session = require('express-session');
-var oracledb = require('oracledb');
+const oracledb = require('oracledb');
 oracledb.autoCommit = true;
 
 // 1. 라우터 경로
-var indexRouter = require('./routes/index');
-var homeRouter = require('./routes/user/home');
-var adminRouter = require('./routes/admin/main');
-var loginRouter = require('./routes/login');
-var joinRouter = require('./routes/join');
-var registerRouter = require('./routes/user/register');
-var listRouter = require('./routes/user/list');
-var detailRouter = require('./routes/user/detail');
-var profileRouter = require('./routes/user/profile');
-var paymentRouter = require('./routes/user/payment');
+const indexRouter = require('./routes/index');
+const homeRouter = require('./routes/user/home');
+const adminRouter = require('./routes/admin/main');
+const loginRouter = require('./routes/login');
+const joinRouter = require('./routes/join');
+const registerRouter = require('./routes/user/register');
+const listRouter = require('./routes/user/list');
+const detailRouter = require('./routes/user/detail');
+const profileRouter = require('./routes/user/profile');
+const paymentRouter = require('./routes/user/payment');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
