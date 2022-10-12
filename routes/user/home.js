@@ -15,7 +15,7 @@ async function selectHotProduct() {
     let options = {
         outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
       };
-    var sql = "SELECT product_name, product_price, product_cnt FROM product ORDER BY product_views DESC";
+    var sql = "SELECT product_name, product_price, product_cnt, product_img FROM product ORDER BY product_views DESC";
 
     let result = await connection.execute(sql, binds, options);
 
@@ -35,7 +35,7 @@ async function selectLiveProduct() {
   let options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
-  var sql = "SELECT product_name, product_content FROM product ORDER BY product_reg DESC";
+  var sql = "SELECT product_name, product_content, product_img FROM product ORDER BY product_reg DESC";
 
   let result = await connection.execute(sql, binds, options);
 

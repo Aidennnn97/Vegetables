@@ -36,7 +36,7 @@
                       %>
                       <tr>
                         <th scope="row"><%= key + 1 %></th>
-                        <td><a href=""><img src="../assets/img/product-1.jpg" alt=""></a></td>
+                        <td><a href="/detail"><img src="../images/<%= el.PRODUCT_IMG %>" alt=""></a></td>
                         <td><%= el.PRODUCT_NAME %></td>
                         <td><%= el.PRODUCT_PRICE %>원</td>
                         <td class="fw-bold"><%= el.PRODUCT_CNT %> / KG</td>
@@ -72,7 +72,7 @@
               <a href="#">
               <div class="news">
                 <div class="post-item clearfix">
-                  <img src="../assets/img/news-1.jpg" alt="">
+                  <img src="../images/<%= el.PRODUCT_IMG %>" alt="">
                   <h4><%=el.PRODUCT_NAME%></h4>
                   <p><%=el.PRODUCT_CONTENT%></p>
                 </div>
@@ -83,7 +83,6 @@
                 }
               }) 
               %>
-            </a>
             </div>
           </div><!-- End News & Updates -->
 

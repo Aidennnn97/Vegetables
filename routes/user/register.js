@@ -14,11 +14,11 @@ const fs = require('fs');
 var upload = multer({ //multer안에 storage정보  
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
-      fs.mkdir('public/imges', function (err) {
+      fs.mkdir('public/images', function (err) {
         if (err && err.code != 'EEXIST') {
           // console.log("already exist")
         } else {
-          callback(null, 'public/imges');
+          callback(null, 'public/images');
         }
       })
     },
@@ -36,55 +36,34 @@ var upload = multer({ //multer안에 storage정보
 
 })
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('register', { title: 'home' });
+  let route = req.app.get('views') + '/register';
+  res.render(route);
 });
 
-async function insertProduct(param) {
+async function insertProduct(params) {
 
   let connection = await oracledb.getConnection(ORACLE_CONFIG);
 
-  let binds = {};
   let options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
-  var sql = "INSERT INTO product(product_no, product_name, product_content, product_cnt, product_price, product_date, product_reg) VALUES((SELECT NVL(MAX(product_no), 0) + 1 FROM product), :name, :content, :count, :price, :date, TO_CHAR(SYSDATE, 'yyyy-MM-dd HH:mi:ss'))";
 
-  let result = await connection.execute(sql, binds, options);
+  var sql = "INSERT INTO product(product_no, product_name, product_content, product_cnt, product_price, product_date, product_img, product_reg) VALUES((SELECT NVL(MAX(product_no), 0)+1 FROM product), :prdtname, :prdtcontent, :prdtcount, :prdtprice, TO_DATE(:prdtdate, 'yyyy-MM-dd HH:mi:ss'), :prdtimg, TO_DATE(SYSDATE, 'yyyy-MM-dd HH:mi:ss'))";
 
-  //console.log(result.rows);
-  
+  await connection.execute(sql, params, options);
+
   await connection.close();
   
-  return result.rows;
 }
 
-async function insertImgInfo(prdtImg1, prdtImg2, prdtImg3, prdtImg4) {
+router.post('/insert', upload.single('prdtImg'), async function(req, res){
+  const params = [req.body.prdtName, req.body.prdtContent, req.body.prdtCnt, req.body.prdtPrice, req.body.prdtDate, req.file.path];
 
-  let connection = await oracledb.getConnection(ORACLE_CONFIG);
-
-  let binds = {};
-  let options = {
-      outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
-    };
-  var sql = "INSERT INTO img(member_id, member_pwd, member_name, member_addr1, member_addr2) VALUES('" + prdtImg1 + "','" + prdtImg2 + "','" + prdtImg3 + "','" + prdtImg4 + "')";
-
-  let result = await connection.execute(sql, binds, options);
-
-  //console.log(result.rows);
-  
-  await connection.close();
-  
-  return result.rows;
-}
+  console.log(params);
 
 
-
-router.post('/', async function(req, res){
-  const param = [req.body.prdtName,req.body.prdtContent,req.body.prdtCnt,req.body.prdtPrice,req.body.prdtDate,req.body.prdtImgs];
-
-  console.log(param);
+  await insertProduct(params);
 
   res.send("<script>alert('상품등록 성공.'); location.href='/home'</script>");
 });

@@ -1,48 +1,5 @@
 <body>
 
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link " href="/home">
-          <i class="bi bi-grid"></i>
-          <span>홈</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/register">
-          <i class="bi bi-journal-text"></i>
-          <span>상품등록</span>
-        </a>
-      </li><!-- End Register Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/list">
-          <i class="bi bi-card-list"></i>
-          <span>상품목록</span>
-        </a>
-      </li><!-- End List Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/profile">
-          <i class="bi bi-person"></i>
-          <span>내 정보</span>
-        </a>
-      </li><!-- End Profile Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/logout">
-          <i class="bi bi-box-arrow-right"></i>
-          <span>로그아웃</span>
-        </a>
-      </li><!-- End Login Page Nav -->
-    </ul>
-
-  </aside><!-- End Sidebar-->
-
   <main id="main" class="main">
 
     <div class="pagetitle">
@@ -51,35 +8,35 @@
     <section class="section">
       <div class="row">
         <div class="col-lg-3">
-
           <div class="card">
-            <a href="/detail">
+            <%
+            list.forEach((el, key)=>{ 
+            %>
             <div class="card-body">
-              <h5 class="card-title">상품명</h5>
-
+              <h5 class="card-title"><%=el.PRODUCT_NAME%></h5>
               <!-- Slides only carousel -->
               <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
-                    <img src="assets/img/slides-1.jpg" class="d-block w-100" alt="...">
+                    <img src="<%= el.PRODUCT_IMG %>" class="d-block w-100" alt="...">
                   </div>
                   <div class="carousel-item">
-                    <img src="assets/img/slides-2.jpg" class="d-block w-100" alt="...">
+                    <img src="<%= el.PRODUCT_IMG %>" class="d-block w-100" alt="...">
                   </div>
                   <div class="carousel-item">
-                    <img src="assets/img/slides-3.jpg" class="d-block w-100" alt="...">
+                    <img src="<%= el.PRODUCT_IMG %>" class="d-block w-100" alt="...">
                   </div>
                 </div>
-              </a>
               </div><!-- End Slides only carousel-->
-              
             </div>
+            <% 
+            })
+            %>
           </div>
-
         </div>
+        
       </div>
     </section>
-
   </main><!-- End #main -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

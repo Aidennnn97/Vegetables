@@ -15,7 +15,8 @@
               <h5 class="card-title">등록할 상품의 정보를 입력하세요</h5>
 
               <!-- General Form Elements -->
-              <form method="post">
+              <form method="post" enctype="multipart/form-data" autocomplete="off" accept-charset="UTF-8" id="insertProduct">
+                <input type="hidden" name="productDetail"> 
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-2 col-form-label">상품명</label>
                   <div class="col-sm-10">
@@ -26,7 +27,7 @@
                 <div class="row mb-3">
                   <label for="inputPassword" class="col-sm-2 col-form-label">상품내용</label>
                   <div class="col-sm-10">
-                    <textarea name="prdtContent" class="form-control" style="height: 100px"></textarea>
+                    <textarea id="editor" name="prdtContent" class="form-control" style="height: 100px" required></textarea>
                   </div>
                 </div>
 
@@ -52,27 +53,20 @@
                 </div>
 
                 <div class="row mb-3">
-                  <label for="inputNumber" class="col-sm-2 col-form-label">사진1</label>
+                  <label for="inputNumber" class="col-sm-2 col-form-label">사진</label>
                   <div class="col-sm-10">
-                    <input name="prdtImg1" class="form-control" type="file" id="formFile" accept="image/*" multiple="multiple">
+                    <input name="prdtImg" class="form-control" type="file" id="formFile" accept="image/*" required >
                   </div>
                   
                 </div>
                 
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">등록버튼</label>
-                  <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">등록</button>
-                  </div>
-                </div>
-
+                <button type="submit" id="insert_btn" class="btn btn-primary">등록</button>
               </form><!-- End General Form Elements -->
-
             </div>
           </div>
 
         </div>
-
+        <!--이미지 미리보기-->
         <div class="col-lg-3">
 
           <!-- Card with an image on top -->
@@ -101,5 +95,24 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script src="https://cdn.ckeditor.com/4.20.0/basic/ckeditor.js"></script>
+    
+    <script>
+        window.onload = function(){
+        //ckeditor
+        var editor = CKEDITOR.replace( 'editor' );
+        $("#insert_btn").click(function () {
+          var content = editor.getData();
+          if (confirm("등록하시겠습니까?") == true) {
+                  $('input[name=productDetail]').attr('value', content);
+                  $("#insertProduct").attr("action", "register/insert");
+                  $("#insertProduct").submit();
+          } else {
+            return;
+          };
+        });
+      }
+    </script>
 
 </body>
