@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const session = require('express-session');
+const expressLayouts = require('express-ejs-layouts');
 const oracledb = require('oracledb');
 oracledb.autoCommit = true;
 
@@ -25,6 +26,11 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.set('layout', 'layout');
+app.set('layout extractScripts', true);
+app.set('layout extractStyles', true);
+app.use(expressLayouts);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -48,6 +54,22 @@ app.use( // request를 통해 세션 접근 가능 ex) req.session
     // store: new MYSQLStore(connt),
   })
 );
+
+// 전역 변수
+app.use(function (req, res, next) {
+  if (req.session.user) {
+    global.sessionId = req.session.user.sessionId;
+    global.sessionName = req.session.user.sessionName;
+    global.sessionAddr1 = req.session.user.sessionAddr1;
+    global.sessionAddr2 = req.session.user.sessionAddr2;
+  } else{
+    global.sessionId = undefined;
+    global.sessionName = undefined;
+    global.sessionAddr1 = undefined;
+    global.sessionAddr2 = undefined;
+  }
+  next();
+});
 
 // 2. 사용할 페이지경로 설정(routes폴더 파일)  3. js파일 만들고 값을 ejs로 던져줌
 app.use('/', indexRouter);

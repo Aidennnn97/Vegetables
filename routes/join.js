@@ -27,7 +27,7 @@ async function insertMemberInfo(memberId, memberPwd, memberName, memberAddr1, me
 
 router.get('/', function(req, res, next) {
   let route = req.app.get('views') + '/join';
-  res.render(route);
+  res.render(route, { layout: false });
 });
 
 router.post('/', async function(req, res){
