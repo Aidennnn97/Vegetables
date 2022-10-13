@@ -15,47 +15,48 @@
               <h5 class="card-title">등록할 상품의 정보를 입력하세요</h5>
 
               <!-- General Form Elements -->
-              <form method="post" enctype="multipart/form-data" autocomplete="off" accept-charset="UTF-8" id="insertProduct">
+              <form action="register/insert" method="post" enctype="multipart/form-data" autocomplete="off" accept-charset="UTF-8" id="insertProduct">
                 <input type="hidden" name="productDetail"> 
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-2 col-form-label">상품명</label>
                   <div class="col-sm-10">
-                    <input name="prdtName" type="text" class="form-control">
+                    <input name="prdtName" type="text" class="form-control" required>
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="inputPassword" class="col-sm-2 col-form-label">상품내용</label>
                   <div class="col-sm-10">
-                    <textarea id="editor" name="prdtContent" class="form-control" style="height: 100px" required></textarea>
+                    <!-- <textarea id="editor" name="prdtContent" class="form-control" style="height: 100px" required></textarea> --> <!--CKEDitor-->
+                    <textarea name="prdtContent" class="form-control" style="height: 100px" required></textarea>
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">수량/KG</label>
                   <div class="col-sm-10">
-                    <input name="prdtCnt" type="number" class="form-control">
+                    <input name="prdtCnt" type="number" class="form-control" required>
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-2 col-form-label">가격</label>
                   <div class="col-sm-10">
-                    <input name="prdtPrice" type="text" class="form-control">
+                    <input name="prdtPrice" type="text" class="form-control" required>
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="inputDate" class="col-sm-2 col-form-label">수확일</label>
                   <div class="col-sm-10">
-                    <input name="prdtDate" type="date" class="form-control">
+                    <input name="prdtDate" type="date" class="form-control" required>
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">사진</label>
                   <div class="col-sm-10">
-                    <input name="prdtImg" class="form-control" type="file" id="formFile" accept="image/*" required >
+                    <input name="prdtImg" class="form-control" type="file" accept="image/*" required onchange="readURL(this);" >
                   </div>
                   
                 </div>
@@ -70,8 +71,8 @@
         <div class="col-lg-3">
 
           <!-- Card with an image on top -->
-          <div class="card">
-            <img src="assets/img/card.jpg" class="card-img-top" alt="...">
+          <div class="card" id="image_container">
+            <img id="preview" src="" alt="">
           </div><!-- End Card with an image on top -->
 
         </div>
@@ -96,9 +97,9 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
-  <script src="https://cdn.ckeditor.com/4.20.0/basic/ckeditor.js"></script>
-    
-    <script>
+  <!--CKEditor-->
+  <!-- <script src="https://cdn.ckeditor.com/4.20.0/basic/ckeditor.js"></script> -->
+    <!-- <script>
         window.onload = function(){
         //ckeditor
         var editor = CKEDITOR.replace( 'editor' );
@@ -112,6 +113,20 @@
             return;
           };
         });
+      }
+    </script> -->
+
+    <script>
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('preview').src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById('preview').src = "";
+        }
       }
     </script>
 
