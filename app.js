@@ -60,11 +60,13 @@ app.use( // request를 통해 세션 접근 가능 ex) req.session
 app.use(function (req, res, next) {
   if (req.session.user) {
     global.sessionId = req.session.user.sessionId;
+    global.sessionNo = req.session.user.sessionNo;
     global.sessionName = req.session.user.sessionName;
     global.sessionAddr1 = req.session.user.sessionAddr1;
     global.sessionAddr2 = req.session.user.sessionAddr2;
   } else{
     global.sessionId = undefined;
+    global.sessionNo = undefined;
     global.sessionName = undefined;
     global.sessionAddr1 = undefined;
     global.sessionAddr2 = undefined;

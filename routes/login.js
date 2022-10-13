@@ -37,6 +37,7 @@ router.post('/login', async (req, res) => {
     } else{ // 조회되면
 
       const userName = result.MEMBER_NAME;
+      const userNo = result.MEMBER_NO;
       const userAddr1 = result.MEMBER_ADDR1;
       const userAddr2 = result.MEMBER_ADDR2;
       // 일반회원 ,관리자회원 판단
@@ -49,6 +50,7 @@ router.post('/login', async (req, res) => {
 
           req.session.user = {
             sessionId: loginId,
+            sessionNo: userNo,
             sessionName: userName,
             sessionAddr1: userAddr1,
             sessionAddr2: userAddr2
@@ -67,6 +69,7 @@ router.post('/login', async (req, res) => {
 
           req.session.user = {
             sessionId: loginId,
+            sessionNo: userNo,
             sessionName: userName,
             sessionAddr1: userAddr1,
             sessionAddr2: userAddr2

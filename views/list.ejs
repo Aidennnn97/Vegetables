@@ -13,17 +13,11 @@
             list.forEach((el, key)=>{ 
             %>
             <div class="card-body">
-              <h5 class="card-title"><%=el.PRODUCT_NAME%></h5>
+              <h5 class="card-title"><a href="detail?prdtNo=<%=el.PRODUCT_NO%>"><%=el.PRODUCT_NAME%></a></h5>
               <!-- Slides only carousel -->
               <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
-                    <img src="<%= el.PRODUCT_IMG %>" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="<%= el.PRODUCT_IMG %>" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item">
                     <img src="<%= el.PRODUCT_IMG %>" class="d-block w-100" alt="...">
                   </div>
                 </div>

@@ -16,7 +16,6 @@
 
               <!-- General Form Elements -->
               <form action="register/insert" method="post" enctype="multipart/form-data" autocomplete="off" accept-charset="UTF-8" id="insertProduct">
-                <input type="hidden" name="productDetail"> 
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-2 col-form-label">상품명</label>
                   <div class="col-sm-10">
@@ -54,9 +53,19 @@
                 </div>
 
                 <div class="row mb-3">
-                  <label for="inputNumber" class="col-sm-2 col-form-label">사진</label>
+                  <label for="inputNumber" class="col-sm-2 col-form-label">대표사진</label>
                   <div class="col-sm-10">
                     <input name="prdtImg" class="form-control" type="file" accept="image/*" required onchange="readURL(this);" >
+                  </div>
+                  
+                </div>
+
+                <div class="row mb-3">
+                  <label for="inputNumber" class="col-sm-2 col-form-label">추가사진</label>
+                  <div class="col-sm-10">
+                    <input name="prdtImg" class="form-control" type="file" accept="image/*" required onchange="readURL1(this);" >
+                    <input name="prdtImg" class="form-control" type="file" accept="image/*" required onchange="readURL2(this);" >
+                    <input name="prdtImg" class="form-control" type="file" accept="image/*" required onchange="readURL3(this);" >
                   </div>
                   
                 </div>
@@ -71,8 +80,11 @@
         <div class="col-lg-3">
 
           <!-- Card with an image on top -->
-          <div class="card" id="image_container">
+          <div class="card">
             <img id="preview" src="" alt="">
+            <img id="preview1" src="" alt="">
+            <img id="preview2" src="" alt="">
+            <img id="preview3" src="" alt="">
           </div><!-- End Card with an image on top -->
 
         </div>
@@ -126,6 +138,39 @@
           reader.readAsDataURL(input.files[0]);
         } else {
           document.getElementById('preview').src = "";
+        }
+      }
+      function readURL1(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('preview1').src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById('preview1').src = "";
+        }
+      }
+      function readURL2(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('preview2').src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById('preview2').src = "";
+        }
+      }
+      function readURL3(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('preview3').src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById('preview3').src = "";
         }
       }
     </script>

@@ -13,7 +13,7 @@ async function selectProductList() {
   let options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
-  var sql = "SELECT product_name, product_img FROM product ";
+  var sql = "SELECT * FROM product";
 
   let result = await connection.execute(sql, binds, options);
 
@@ -24,7 +24,6 @@ async function selectProductList() {
   return result.rows;
 }
 
-/* GET home page. */
 router.get('/', async function(req, res) {
   productList = await selectProductList();
   res.render('list', { list: productList });

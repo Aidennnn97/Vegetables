@@ -36,11 +36,8 @@ var upload = multer({ //multer안에 storage정보
 
 })
 
-router.get('/', function(req, res, next) {
-  let route = req.app.get('views') + '/register';
-  res.render(route);
-});
 
+// 상품등록
 async function insertProduct(params) {
 
   let connection = await oracledb.getConnection(ORACLE_CONFIG);
@@ -57,15 +54,48 @@ async function insertProduct(params) {
   
 }
 
-router.post('/insert', upload.single('prdtImg'), async function(req, res){
-  const params = [req.body.prdtName, req.body.prdtContent, req.body.prdtCnt, req.body.prdtPrice, req.body.prdtDate, req.file.path];
+// 상품 추가사진 등록
+async function insertImg(param2) {
+  // console.log(param2)
+  let connection = await oracledb.getConnection(ORACLE_CONFIG);
+
+  var sql = "INSERT INTO img(img_route, img_no, img_name, img_type, product_no) VALUES(:imgRoute, :imgNo, :imgName, :imgType, (SELECT MAX(product_no) FROM product))";
+
+  let options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
+    };
+
+  await connection.execute(sql, param2, options)
+  
+  await connection.close();
+
+}
+
+router.post('/insert', upload.array('prdtImg'), async function(req, res){
+  // 파일이 저장된 경로
+  const paths = req.files.map(data => data.path);
+
+  // 파일 원본이름
+  const imgName = req.files.map(data => data.originalname);
+
+  // paths[0] : 대표사진
+  const params = [req.body.prdtName, req.body.prdtContent, req.body.prdtCnt, req.body.prdtPrice, req.body.prdtDate, paths[0]];
+  await insertProduct(params);
+
+  for(let i = 1; i < paths.length; i++){
+    const param2 = [paths[i], i, imgName[i], path.extname(paths[i])];
+    await insertImg(param2);
+  }
 
   console.log(params);
 
 
-  await insertProduct(params);
-
   res.send("<script>alert('상품등록 성공.'); location.href='/home'</script>");
+});
+
+router.get('/', function(req, res) {
+  let route = req.app.get('views') + '/register';
+  res.render(route);
 });
 
 module.exports = router;

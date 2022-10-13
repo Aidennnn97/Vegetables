@@ -36,7 +36,7 @@
                       %>
                       <tr>
                         <th scope="row"><%= key + 1 %></th>
-                        <td><a href="/detail"><img src="<%= el.PRODUCT_IMG %>" alt=""></a></td>
+                        <td><a href="/detail?prdtNo=<%=el.PRODUCT_NO%>"><img src="../<%= el.PRODUCT_IMG %>" alt=""></a></td>
                         <td><%= el.PRODUCT_NAME %></td>
                         <td><%= el.PRODUCT_PRICE %>원</td>
                         <td class="fw-bold"><%= el.PRODUCT_CNT %> / KG</td>
@@ -69,10 +69,10 @@
               live.forEach((el, key)=>{ 
                 if(key <= 4){
               %>
-              <a href="#">
+              <a href="/detail?prdtNo=<%=el.PRODUCT_NO%>">
               <div class="news">
                 <div class="post-item clearfix">
-                  <img src="<%= el.PRODUCT_IMG %>" alt="">
+                  <img src="../<%= el.PRODUCT_IMG %>" alt="">
                   <h4><%=el.PRODUCT_NAME%></h4>
                   <p><%=el.PRODUCT_CONTENT%></p>
                 </div>
