@@ -42,28 +42,41 @@
 
               <div class="tab-content pt-2">
 
+                <!-- 장바구니에 상품이 존재하는 경우 -->
+                <% if(cartProduct.length != 0){ %> 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                   <!-- Cart Table -->
                   <table class="table table-sm"><!-- Small tables -->
                     <thead>
                       <tr>
                         <th scope="col">#</th>
+                        <th scope="col">이미지</th>
                         <th scope="col">상품명</th>
-                        <th scope="col">가격</th>
-                        <th scope="col">수량</th>
+                        <th scope="col">수량 / KG</th>
+                        <th scope="col">총액</th>
                       </tr>
                     </thead>
                     <tbody>
+                      <% cartProduct.forEach((el, key)=>{
+                      %>
                       <tr>
-                        <th scope="row">1</th>
-                        <td>Brandon Jacob</td>
-                        <td>Designer</td>
-                        <td>28</td>
+                        <th scope="row"><%= key + 1 %></th>
+                        <td><a href="/detail?prdtNo=<%=el.PRODUCT_NO%>"><img src="../<%= el.PRODUCT_IMG %>" width="50" height="50"></a></td>
+                        <td><%= el.PRODUCT_NAME %></td>
+                        <td class="fw-bold"><%= el.CARTPRODUCT_CNT %></td>
+                        <td><%= el.SUM_PRICE %>원</td>
+                      </tr>
+                      <% 
+                          }) 
+                      %>
                     </tbody>
                   </table><!-- End small tables -->
                   <!-- End Cart Table -->
                   <button><a href="/payment">주문</a></button>
                 </div>
+                <% } else{ %>
+                  <h2>장바구니에 상품이 존재하지 않습니다.</h2>
+                <% } %>
 
               </div><!-- End Bordered Tabs -->
 

@@ -46,7 +46,7 @@ async function insertProduct(params) {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
 
-  var sql = "INSERT INTO product(product_no, product_name, product_content, product_cnt, product_price, product_date, product_img, product_reg) VALUES((SELECT NVL(MAX(product_no), 0)+1 FROM product), :prdtname, :prdtcontent, :prdtcount, :prdtprice, TO_DATE(:prdtdate, 'yyyy-MM-dd HH:mi:ss'), :prdtimg, TO_DATE(SYSDATE, 'yyyy-MM-dd HH:mi:ss'))";
+  var sql = "INSERT INTO product(product_no, product_name, product_content, product_cnt, product_price, product_date, product_img, product_reg, member_no) VALUES((SELECT NVL(MAX(product_no), 0)+1 FROM product), :prdtName, :prdtContent, :prdtCnt, :prdtPrice, TO_DATE(:prdtdate, 'yyyy-MM-dd HH:mi:ss'), :prdtimg, TO_DATE(SYSDATE, 'yyyy-MM-dd HH:mi:ss'), :memberNo)";
 
   await connection.execute(sql, params, options);
 
@@ -79,7 +79,7 @@ router.post('/insert', upload.array('prdtImg'), async function(req, res){
   const imgName = req.files.map(data => data.originalname);
 
   // paths[0] : 대표사진
-  const params = [req.body.prdtName, req.body.prdtContent, req.body.prdtCnt, req.body.prdtPrice, req.body.prdtDate, paths[0]];
+  const params = [req.body.prdtName, req.body.prdtContent, req.body.prdtCnt, req.body.prdtPrice, req.body.prdtDate, paths[0], sessionNo];
   await insertProduct(params);
 
   for(let i = 1; i < paths.length; i++){
