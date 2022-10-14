@@ -48,7 +48,7 @@ async function selectCartProduct(userNo) {
   let options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
-  var sql = "SELECT c.*, p.product_name, p.product_img, (c.cartproduct_cnt * p.product_price) AS sum_price FROM cartproduct c LEFT JOIN product p ON c.product_no = p.product_no WHERE c.cart_no = (SELECT cart_no FROM cart WHERE member_no = :no)";
+  var sql = "SELECT c.*, p.product_name, p.product_img, (REGEXP_REPLACE(p.product_price, ',', '')) AS product_price, (c.cartproduct_cnt * TO_NUMBER(product_price, '999,999')) AS sum_price FROM cartproduct c LEFT JOIN product p ON c.product_no = p.product_no WHERE c.cart_no = (SELECT cart_no FROM cart WHERE member_no = :no) ORDER BY c.cartproduct_no DESC";
 
   let result = await connection.execute(sql, [userNo], options);
 
@@ -56,6 +56,8 @@ async function selectCartProduct(userNo) {
   
   return result.rows;
 }
+
+
 
 // 장바구니 조회 및 등록
 router.get('/', async function(req, res, next) {
@@ -75,10 +77,18 @@ router.get('/', async function(req, res, next) {
 
     // 장바구니 물품 조회
     cartProduct = await selectCartProduct(userNo);
-
+    console.log("2");
   }
+  
+  console.log("1");
 
-  res.render('profile', { cartProduct: cartProduct });
+  // 총 결제금액
+  var totalPrice = 0;
+    for(var i = 0; i < cartProduct.length; i++){
+      totalPrice += cartProduct[i].SUM_PRICE;
+    }
+
+  res.render('profile', { cartProduct: cartProduct, total: totalPrice });
 });
 
 module.exports = router;

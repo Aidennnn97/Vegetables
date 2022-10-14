@@ -52,8 +52,9 @@
                         <th scope="col">#</th>
                         <th scope="col">이미지</th>
                         <th scope="col">상품명</th>
+                        <th scope="col">가격</th>
                         <th scope="col">수량 / KG</th>
-                        <th scope="col">총액</th>
+                        <th scope="col">금액</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -63,6 +64,7 @@
                         <th scope="row"><%= key + 1 %></th>
                         <td><a href="/detail?prdtNo=<%=el.PRODUCT_NO%>"><img src="../<%= el.PRODUCT_IMG %>" width="50" height="50"></a></td>
                         <td><%= el.PRODUCT_NAME %></td>
+                        <td><%= el.PRODUCT_PRICE %>원</td>
                         <td class="fw-bold"><%= el.CARTPRODUCT_CNT %></td>
                         <td><%= el.SUM_PRICE %>원</td>
                       </tr>
@@ -72,6 +74,7 @@
                     </tbody>
                   </table><!-- End small tables -->
                   <!-- End Cart Table -->
+                  <h3>총 결제금액: <%=total%>원</h3>
                   <button><a href="/payment">주문</a></button>
                 </div>
                 <% } else{ %>
@@ -104,5 +107,11 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  // <script>
+  //   var totalPrice;
+  //   for(var i = 0; i < cartProduct.length; i++){
+  //     totalPrice += cartProduct[i].sum_price;
+  //   }
+  // </script>
 
 </body>

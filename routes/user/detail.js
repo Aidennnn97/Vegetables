@@ -88,4 +88,29 @@ router.get('/', async function(req, res) {
   res.render('detail', { info: info, imgs: imgs, user: user });
 });
 
+// 장바구니 물품 추가
+async function addCart(params) {
+
+  let connection = await oracledb.getConnection(ORACLE_CONFIG);
+
+  let options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
+    };
+
+  var sql = "INSERT INTO cartproduct VALUES((SELECT NVL(MAX(cartproduct_no), 0)+1 FROM cartproduct), :cnt, :userNo, :prdtNo)";
+
+  await connection.execute(sql, params, options);
+
+  await connection.close();
+  
+}
+
+router.post('/', async function(req, res){
+  const prdtNo = req.query.prdtNo == undefined ? 1 : req.query.prdtNo;
+  const params = [req.body.cnt, sessionNo, prdtNo];
+  // console.log(params);
+  await addCart(params);
+  res.send("<script>alert('장바구니담기 성공.'); location.href = document.referrer;</script>");
+});
+
 module.exports = router;

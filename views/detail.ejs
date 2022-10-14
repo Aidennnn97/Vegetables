@@ -51,16 +51,18 @@
                     <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
                   </a>
                 </div>
+                <form action="" method="post">
                 <div>
                   <h6><%=user.MEMBER_NAME%></h6>
                   <h6><%=user.MEMBER_ADDR1%></h6>
                   <h6><%=user.MEMBER_ADDR2%></h6>
-                  <h6><input type="number" name="cnt">  <%= info.PRODUCT_CNT %> </h6>
+                  <h6><input type="number" name="cnt" required>  <%= info.PRODUCT_CNT %> </h6>
                   <h6><%=info.PRODUCT_PRICE%>원</h6>
                 </div>
                 <div>
-                  <button>장바구니</button>
+                  <button type="submit" >장바구니</button>
                 </div>
+                </form>
               </div>
                 
                 <textarea class="form-control" style="height: 100px" disabled><%=info.PRODUCT_CONTENT%></textarea>

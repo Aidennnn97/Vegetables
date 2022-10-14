@@ -1,0 +1,178 @@
+<body>
+
+    <main id="main" class="main">
+  
+      <div class="pagetitle">
+        <h1>상품등록</h1>
+      </div><!-- End Page Title -->
+  
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-6">
+  
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">등록할 상품의 정보를 입력하세요</h5>
+  
+                <!-- General Form Elements -->
+                <form action="register/insert" method="post" enctype="multipart/form-data" autocomplete="off" accept-charset="UTF-8" id="insertProduct">
+                  <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">상품명</label>
+                    <div class="col-sm-10">
+                      <input name="prdtName" type="text" class="form-control" required>
+                    </div>
+                  </div>
+  
+                  <div class="row mb-3">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">상품내용</label>
+                    <div class="col-sm-10">
+                      <!-- <textarea id="editor" name="prdtContent" class="form-control" style="height: 100px" required></textarea> --> <!--CKEDitor-->
+                      <textarea name="prdtContent" class="form-control" style="height: 100px" required></textarea>
+                    </div>
+                  </div>
+  
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">수량/KG</label>
+                    <div class="col-sm-10">
+                      <input name="prdtCnt" type="number" class="form-control" required>
+                    </div>
+                  </div>
+  
+                  <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">가격</label>
+                    <div class="col-sm-10">
+                      <input name="prdtPrice" type="text" class="form-control" required>
+                    </div>
+                  </div>
+  
+                  <div class="row mb-3">
+                    <label for="inputDate" class="col-sm-2 col-form-label">수확일</label>
+                    <div class="col-sm-10">
+                      <input name="prdtDate" type="date" class="form-control" required>
+                    </div>
+                  </div>
+  
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">대표사진</label>
+                    <div class="col-sm-10">
+                      <input name="prdtImg" class="form-control" type="file" accept="image/*" required onchange="readURL(this);" >
+                    </div>
+                    
+                  </div>
+  
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">추가사진</label>
+                    <div class="col-sm-10">
+                      <input name="prdtImg" class="form-control" type="file" accept="image/*" required onchange="readURL1(this);" >
+                      <input name="prdtImg" class="form-control" type="file" accept="image/*" required onchange="readURL2(this);" >
+                      <input name="prdtImg" class="form-control" type="file" accept="image/*" required onchange="readURL3(this);" >
+                    </div>
+                    
+                  </div>
+                  
+                  <button type="submit" id="insert_btn" class="btn btn-primary">등록</button>
+                </form><!-- End General Form Elements -->
+              </div>
+            </div>
+  
+          </div>
+          <!--이미지 미리보기-->
+          <div class="col-lg-3">
+  
+            <!-- Card with an image on top -->
+            <div class="card">
+              <img id="preview" src="" alt="">
+              <img id="preview1" src="" alt="">
+              <img id="preview2" src="" alt="">
+              <img id="preview3" src="" alt="">
+            </div><!-- End Card with an image on top -->
+  
+          </div>
+  
+        </div>
+      </section>
+  
+    </main><!-- End #main -->
+  
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/chart.js/chart.min.js"></script>
+    <script src="assets/vendor/echarts/echarts.min.js"></script>
+    <script src="assets/vendor/quill/quill.min.js"></script>
+    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+  
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+  
+    <!--CKEditor-->
+    <!-- <script src="https://cdn.ckeditor.com/4.20.0/basic/ckeditor.js"></script> -->
+      <!-- <script>
+          window.onload = function(){
+          //ckeditor
+          var editor = CKEDITOR.replace( 'editor' );
+          $("#insert_btn").click(function () {
+            var content = editor.getData();
+            if (confirm("등록하시겠습니까?") == true) {
+                    $('input[name=productDetail]').attr('value', content);
+                    $("#insertProduct").attr("action", "register/insert");
+                    $("#insertProduct").submit();
+            } else {
+              return;
+            };
+          });
+        }
+      </script> -->
+  
+      <script>
+        function readURL(input) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              document.getElementById('preview').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+          } else {
+            document.getElementById('preview').src = "";
+          }
+        }
+        function readURL1(input) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              document.getElementById('preview1').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+          } else {
+            document.getElementById('preview1').src = "";
+          }
+        }
+        function readURL2(input) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              document.getElementById('preview2').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+          } else {
+            document.getElementById('preview2').src = "";
+          }
+        }
+        function readURL3(input) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              document.getElementById('preview3').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+          } else {
+            document.getElementById('preview3').src = "";
+          }
+        }
+      </script>
+  
+  </body>

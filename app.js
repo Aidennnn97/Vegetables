@@ -19,6 +19,7 @@ const registerRouter = require('./routes/user/register');
 const listRouter = require('./routes/user/list');
 const detailRouter = require('./routes/user/detail');
 const profileRouter = require('./routes/user/profile');
+const editRouter = require('./routes/user/edit');
 const paymentRouter = require('./routes/user/payment');
 
 const app = express();
@@ -81,6 +82,7 @@ app.use('/register', registerRouter);
 app.use('/list', listRouter);
 app.use('/detail', detailRouter);
 app.use('/profile', profileRouter);
+app.use('/edit', editRouter);
 app.use('/payment', paymentRouter);
 app.use('/login', loginRouter);
 app.use('/join', joinRouter);
