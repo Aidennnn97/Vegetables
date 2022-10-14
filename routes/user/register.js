@@ -46,7 +46,7 @@ async function insertProduct(params) {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
 
-  var sql = "INSERT INTO product(product_no, product_name, product_content, product_cnt, product_price, product_date, product_img, product_reg, member_no) VALUES((SELECT NVL(MAX(product_no), 0)+1 FROM product), :prdtName, :prdtContent, :prdtCnt, TO_CHAR(:prdtPrice, '999,999'), TO_DATE(:prdtdate, 'yyyy/mm/dd'), :prdtimg, TO_CHAR(sysdate+9/24, 'yyyy/mm/dd hh24:mi:ss'), :memberNo)";
+  var sql = "INSERT INTO product(product_no, product_name, product_content, product_cnt, product_price, product_date, product_img, product_reg, product_views, member_no) VALUES((SELECT NVL(MAX(product_no), 0)+1 FROM product), :prdtName, :prdtContent, :prdtCnt, TO_CHAR(:prdtPrice, '999,999'), TO_DATE(:prdtdate, 'yyyy/mm/dd'), :prdtimg, TO_CHAR(sysdate+9/24, 'yyyy/mm/dd hh24:mi:ss'), 0, :memberNo)";
 
   await connection.execute(sql, params, options);
 

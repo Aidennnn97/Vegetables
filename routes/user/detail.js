@@ -62,11 +62,29 @@ async function selectUserInfo(prdtNo){
   return result.rows[0];
 }
 
+// 상품 클릭시 조회수 증가
+async function addProductView(prdtNo){
+  let connection = await oracledb.getConnection(ORACLE_CONFIG);
+
+  let options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
+    };
+
+  var sql = "UPDATE product SET product_views = product_views + 1 WHERE product_no = :prdtNo";
+
+  await connection.execute(sql, [prdtNo], options);
+
+  await connection.close();
+  
+}
+
+
 router.get('/', async function(req, res) {
   const prdtNo = req.query.prdtNo == undefined ? 1 : req.query.prdtNo;
   info = await selectProductInfo(prdtNo);
   imgs = await selectImgList(prdtNo);
   user = await selectUserInfo(prdtNo);
+  await addProductView(prdtNo);
   res.render('detail', { info: info, imgs: imgs, user: user });
 });
 
