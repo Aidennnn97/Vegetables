@@ -61,7 +61,7 @@
                       <% cartProduct.forEach((el, key)=>{
                       %>
                       <tr>
-                        <th scope="row"><%= key + 1 %></th>
+                        <th scope="row"><a href=""><i class="bi-x-square"></i></a></th>
                         <td><a href="/detail?prdtNo=<%=el.PRODUCT_NO%>"><img src="../<%= el.PRODUCT_IMG %>" width="50" height="50"></a></td>
                         <td><%= el.PRODUCT_NAME %></td>
                         <td><%= el.PRODUCT_PRICE %>원</td>

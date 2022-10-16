@@ -57,6 +57,20 @@ async function selectCartProduct(userNo) {
   return result.rows;
 }
 
+// 장바구니 상품 삭제
+async function deleteCartProduct(userNo){
+  let connection = await oracledb.getConnection(ORACLE_CONFIG);
+
+  let options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
+    };
+  var sql = "DELETE FROM cartproduct WHERE cartproduct_no = :no ";
+
+  await connection.execute(sql, [userNo], options);
+
+  await connection.close();
+}
+
 
 
 // 장바구니 조회 및 등록
@@ -77,11 +91,8 @@ router.get('/', async function(req, res, next) {
 
     // 장바구니 물품 조회
     cartProduct = await selectCartProduct(userNo);
-    console.log("2");
   }
   
-  console.log("1");
-
   // 총 결제금액
   var totalPrice = 0;
     for(var i = 0; i < cartProduct.length; i++){
@@ -89,6 +100,11 @@ router.get('/', async function(req, res, next) {
     }
 
   res.render('profile', { cartProduct: cartProduct, total: totalPrice });
+});
+
+// 장바구니 상품 삭제
+router.delete('/', function(req, res){
+
 });
 
 module.exports = router;
