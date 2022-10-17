@@ -33,6 +33,7 @@ async function selectCartProduct(cartChk) {
 // 결제페이지로 이동
 router.post('/', async function(req, res) {
   const cartChk = JSON.parse("[" + req.body.cartChk + "]");
+  console.log(cartChk);
   const buyProduct = await selectCartProduct(cartChk);
   var sumPrice = 0;
   for(i=0; i < buyProduct.length; i++){

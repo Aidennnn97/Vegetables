@@ -166,7 +166,7 @@
             <div class="card-body">
               <h5 class="card-title">결제</h5>
 
-              <form class="row g-3" method="post" action="/buyProduct">
+              <form class="row g-3" method="post">
                 <!-- <div class="col-12">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="gridCheck">
@@ -181,10 +181,10 @@
                     </label>
                   </div>
                 </div> -->
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary">결제하기</button>
-                </div>
               </form>
+              <div class="text-center">
+                <button type="submit" id="purchase_btn" class="btn btn-primary">결제하기</button>
+              </div>
 
             </div>
           </div>
@@ -216,30 +216,38 @@
   <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
   
   <script>
-    var IMP = window.IMP; 
-    IMP.init(' 가맹점 식별 코드'); 
-    IMP.request_pay({
-    	pg : "kakaopay", 
-        pay_method : 'card',
-        merchant_uid : 'merchant_' + new Date().getTime(),
-        name : '결제',
-        amount : 주문개수,
-        buyer_email : '구매자 이메일',
-        buyer_name : '구매자 이름',
-        buyer_tel : '구매자 번호',
-        buyer_addr : '구매자 주소',
-        buyer_postcode : '구매자 주소',
-        m_redirect_url : 'redirect url'
-    }, function(rsp) {
-        if ( rsp.success ) {
-            var msg = '결제가 완료되었습니다.';
-            location.href='/profile';
-        } else {
-            var msg = '결제에 실패하였습니다.';
-            rsp.error_msg;
-            
-        }
-    });
+    window.onload = function(){
+        $("#purchase_btn").click(function () {
+          if (confirm("결제하시겠습니까?") == true) {
+            var IMP = window.IMP; 
+              IMP.init('imp52784676'); 
+              IMP.request_pay({
+                pg : "kakaopay", 
+                  pay_method : 'card',
+                  merchant_uid : 'merchant_' + new Date().getTime(),
+                  name : '결제',
+                  amount : 1,
+                  buyer_email : '구매자 이메일',
+                  buyer_name : '구매자 이름',
+                  buyer_tel : '구매자 번호',
+                  buyer_addr : '구매자 주소',
+                  buyer_postcode : '구매자 주소',
+                  m_redirect_url : 'redirect url'
+              }, function(rsp) {
+                  if (rsp.success) {
+                      var msg = '결제가 완료되었습니다.';
+                      location.href='#';
+                  } else {
+                      var msg = '결제에 실패하였습니다.';
+                      rsp.error_msg;
+                      
+                  }
+              });
+          } else {
+            return;
+          };
+        });
+      }
     </script>
 
 
