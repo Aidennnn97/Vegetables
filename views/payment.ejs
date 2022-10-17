@@ -38,11 +38,11 @@
                 <h5 class="card-title">주문하시는분</h5>
                   <div class="col-md-6">
                     <label for="inputName5" class="form-label">이름</label>
-                    <input type="text" class="form-control" placeholder="Your Name">
+                    <input type="text" name="order_name" class="form-control" placeholder="Your Name" required>
                   </div>
                   <div class="col-md-6">
                     <label for="inputName5" class="form-label">전화번호</label>
-                    <input type="text" class="form-control" placeholder="Phone Number">
+                    <input type="text" name="order_phone" class="form-control" placeholder="Phone Number" required>
                   </div>
               </div>
             </div>
@@ -53,28 +53,28 @@
                 <h5 class="card-title">받으시는분</h5>
                   <div class="col-md-12">
                     <label for="inputName5" class="form-label">이름</label>
-                    <input type="text" class="form-control" id="inputName5">
+                    <input type="text" name="get_name" class="form-control" id="inputName5" required>
                   </div>
                   <div class="col-md-12">
                     <label for="inputName5" class="form-label">전화번호</label>
-                    <input type="text" class="form-control" id="inputName5">
+                    <input type="text" name="get_phone" class="form-control" id="inputName5" required>
                   </div>
                   <div class="col-12">
                     <label for="inputAddress5" class="form-label">주소</label>
-                    <input type="text" class="form-control" id="inputAddres5s" placeholder="경상북도 경산시 하양읍">
+                    <input type="text" name="get_addr" class="form-control" id="inputAddres5s" placeholder="경상북도 경산시 하양읍" required>
                   </div>
                   <div class="col-12">
                     <label for="inputAddress2" class="form-label">상세주소</label>
-                    <input type="text" class="form-control" id="inputAddress2" placeholder="아파트 동 호수">
+                    <input type="text" name="get_addr_detail" class="form-control" id="inputAddress2" placeholder="아파트 동 호수" required>
                   </div>
-                  <div class="col-md-12">
+                  <!-- <div class="col-md-12">
                     <label for="inputState" class="form-label">배송 메모</label>
                     <select id="inputState" class="form-select">
                       <option selected>배송메모를 선택해 주세요.</option>
                       <option>빠른 배송 부탁드립니다.</option>
                       <option>배송 전 연락 바랍니다.</option>
                     </select>
-                  </div>
+                  </div> -->
               </div>
             </div>
   
@@ -95,11 +95,11 @@
                   </tr>
                   <tr>
                     <th scope="row">배송비</th>
-                    <td>3,000</td>
+                    <td>3000</td>
                   </tr>
                 </tbody>
               </table><hr/>
-              <span>총 결제금액</span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<span><%=sumPrice + 3000%>원</span> 
+              <span>총 결제금액</span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;<span><%=sumPrice + 3000%>원</span> 
             </div>
           </div>
 
@@ -166,7 +166,7 @@
             <div class="card-body">
               <h5 class="card-title">결제</h5>
 
-              <form class="row g-3">
+              <form class="row g-3" method="post" action="/buyProduct">
                 <!-- <div class="col-12">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="gridCheck">
@@ -211,5 +211,36 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- 결제 API -->
+  <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+  
+  <script>
+    var IMP = window.IMP; 
+    IMP.init(' 가맹점 식별 코드'); 
+    IMP.request_pay({
+    	pg : "kakaopay", 
+        pay_method : 'card',
+        merchant_uid : 'merchant_' + new Date().getTime(),
+        name : '결제',
+        amount : 주문개수,
+        buyer_email : '구매자 이메일',
+        buyer_name : '구매자 이름',
+        buyer_tel : '구매자 번호',
+        buyer_addr : '구매자 주소',
+        buyer_postcode : '구매자 주소',
+        m_redirect_url : 'redirect url'
+    }, function(rsp) {
+        if ( rsp.success ) {
+            var msg = '결제가 완료되었습니다.';
+            location.href='/profile';
+        } else {
+            var msg = '결제에 실패하였습니다.';
+            rsp.error_msg;
+            
+        }
+    });
+    </script>
+
 
 </body>

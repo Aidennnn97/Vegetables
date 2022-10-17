@@ -58,15 +58,33 @@ async function selectCartProduct(userNo) {
 }
 
 // 장바구니 상품 삭제
-async function deleteCartProduct(params){
+// async function deleteCartProduct(params){
+//   let connection = await oracledb.getConnection(ORACLE_CONFIG);
+
+//   let options = {
+//       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
+//     };
+//   var sql = "DELETE FROM cartproduct WHERE cartproduct_no = :cartprdtno AND cart_no = :no";
+
+//   await connection.execute(sql, params, options);
+
+//   await connection.close();
+// }
+
+async function deleteCartProduct(cartChk){
   let connection = await oracledb.getConnection(ORACLE_CONFIG);
 
   let options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
-  var sql = "DELETE FROM cartproduct WHERE cartproduct_no = :cartprdtno AND cart_no = :no";
+  var sql = "DELETE FROM cartproduct WHERE cartproduct_no = :cartChk";
+  if(cartChk.length > 1){
+    for(j=0; j<cartChk.length-1; j++){
+      sql += " OR cartproduct_no = :cartChk"
+    }
+  }
 
-  await connection.execute(sql, params, options);
+  await connection.execute(sql, cartChk, options);
 
   await connection.close();
 }
@@ -104,10 +122,12 @@ router.get('/', async function(req, res, next) {
 
 // 장바구니 상품 삭제
 router.post('/delete', async function(req, res){
-  const cartprdtNo = req.query.cartprdtNo == undefined ? 1 : req.query.cartprdtNo;
-  const params = [cartprdtNo, sessionNo];
+  // const cartprdtNo = req.query.cartprdtNo == undefined ? 1 : req.query.cartprdtNo;
+  // const params = [cartprdtNo, sessionNo];
   // console.log(params);
-  await deleteCartProduct(params);
+  // await deleteCartProduct(params);
+  const cartChk = JSON.parse("[" + req.body.cartChk + "]");
+  await deleteCartProduct(cartChk);
   res.send("<script>alert('상품삭제 성공.'); location.href='/profile'</script>");
 });
 
