@@ -6,23 +6,19 @@ const {
 } = require("../config/db");
 
 
-async function insertMemberInfo(memberId, memberPwd, memberName, memberAddr1, memberAddr2) {
+async function insertMemberInfo(params) {
 
   let connection = await oracledb.getConnection(ORACLE_CONFIG);
 
-  let binds = {};
   let options = {
       outFormat: oracledb.OUT_FORMAT_OBJECT   // query result format
     };
-  var sql = "INSERT INTO member(member_id, member_pwd, member_name, member_addr1, member_addr2) VALUES('" + memberId + "','" + memberPwd + "','" + memberName + "','" + memberAddr1 + "','" + memberAddr2 + "')";
+  var sql = "INSERT INTO member(member_no, member_id, member_pwd, member_name, member_addr1, member_addr2, member_auth) VALUES((SELECT NVL(MAX(member_no), 0)+1 FROM member), :memberId, :memberPwd, :memberName , :memberAddr1, :memberAddr2, :memberAuth)";
 
-  let result = await connection.execute(sql, binds, options);
-
-  //console.log(result.rows);
+  await connection.execute(sql, params, options);
   
   await connection.close();
-  
-  return result.rows;
+
 }
 
 router.get('/', function(req, res, next) {
@@ -31,14 +27,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', async function(req, res){
-  // console.log(req.body)
-  var memberId = req.body.memberId;
-  var memberPwd = req.body.memberPwd;
-  var memberName = req.body.memberName;
-  var memberAddr1 = req.body.memberAddr1;
-  var memberAddr2 = req.body.memberAddr2;
-  console.log(memberId, memberPwd, memberName, memberAddr1, memberAddr2);
-  await insertMemberInfo(memberId, memberPwd, memberName, memberAddr1, memberAddr2);
+  const params = [req.body.memberId, req.body.memberPwd, req.body.memberName, req.body.memberAddr1, req.body.memberAddr2, '일반회원'];
+  // console.log(params);
+  await insertMemberInfo(params);
   res.send("<script>alert('회원가입 성공.'); location.href='/'</script>");
 })
 

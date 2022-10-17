@@ -45,6 +45,8 @@
                 <!-- 장바구니에 상품이 존재하는 경우 -->
                 <% if(cartProduct.length != 0){ %> 
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  <form id="cartForm" method="post">
+                    <input type="hidden" id="cartChk" name="cartChk"/>
                   <!-- Cart Table -->
                   <table class="table table-sm"><!-- Small tables -->
                     <thead>
@@ -55,20 +57,20 @@
                         <th scope="col">가격</th>
                         <th scope="col">수량 / KG</th>
                         <th scope="col">금액</th>
+                        <th scope="col">선택</th>
                       </tr>
                     </thead>
                     <tbody>
                       <% cartProduct.forEach((el, key)=>{
                       %>
                       <tr>
-                        <th scope="row">
-                          <form action="/profile/delete?cartprdtNo=<%=el.CARTPRODUCT_NO%>" method="post"><button type="submit" class="bi-x-square"></button></form>
-                        </th>
+                        <th scope="row"><th scope="row"><%= key + 1 %></th>
                         <td><a href="/detail?prdtNo=<%=el.PRODUCT_NO%>"><img src="../<%= el.PRODUCT_IMG %>" width="50" height="50"></a></td>
                         <td><%= el.PRODUCT_NAME %></td>
                         <td><%= el.PRODUCT_PRICE %>원</td>
                         <td class="fw-bold"><%= el.CARTPRODUCT_CNT %></td>
                         <td><%= el.SUM_PRICE %>원</td>
+                        <td><input type="checkbox" id="chk" name="chk" value="<%=el.CARTPRODUCT_NO%>"></input></td>
                       </tr>
                       <% 
                           }) 
@@ -77,7 +79,9 @@
                   </table><!-- End small tables -->
                   <!-- End Cart Table -->
                   <h3>총 결제금액: <%=total%>원</h3>
-                  <button><a href="/payment">주문</a></button>
+                  </form>
+                  <button id="buy_cart">주문</button>
+                  <button id="delete_cart">삭제</button>
                 </div>
                 <% } else{ %>
                   <h2>장바구니에 상품이 존재하지 않습니다.</h2>
@@ -109,11 +113,43 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
-  // <script>
-  //   var totalPrice;
-  //   for(var i = 0; i < cartProduct.length; i++){
-  //     totalPrice += cartProduct[i].sum_price;
-  //   }
-  // </script>
+  <script>
+    window.onload = function(){
+
+        // 상품 주문
+          $("#buy_cart").click(function () {
+              if (confirm("주문하시겠습니까?") == true) {
+                    // 체크된 상품 번호 가져오기
+                    var chkArr = [];
+                    $("input[name=chk]:checked").each(function () {
+                        chkArr.push($(this).val());
+                    });
+                    console.log(chkArr)
+                    $('#cartChk').val(chkArr);
+                    $("#cartForm").attr("action", "payment");
+                    $("#cartForm").submit();
+              } else {
+                return;
+              };
+          });
+
+          // 상품삭제
+          $("#delete_cart").click(function () {
+              if (confirm("삭제하시겠습니까?") == true) {
+                    // 체크된 상품 번호 가져오기
+                    var chkArr = [];
+                    $("input[name=chk]:checked").each(function () {
+                        chkArr.push($(this).val());
+                    });
+                    console.log(chkArr)
+                    $('#cartChk').val(chkArr);
+                    $("#cartForm").attr("action", "profile");
+                    $("#cartForm").submit();
+              } else {
+                return;
+              };
+          });
+        }
+  </script>
 
 </body>
