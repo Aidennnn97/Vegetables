@@ -32,49 +32,38 @@
               </div>
             </div>
             
-            <!-- 주문자정보 -->
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">주문하시는분</h5>
-                  <div class="col-md-6">
-                    <label for="inputName5" class="form-label">이름</label>
-                    <input type="text" name="order_name" class="form-control" placeholder="Your Name" required>
-                  </div>
-                  <div class="col-md-6">
-                    <label for="inputName5" class="form-label">전화번호</label>
-                    <input type="text" name="order_phone" class="form-control" placeholder="Phone Number" required>
-                  </div>
-              </div>
-            </div>
-            
             <!-- 배송지정보 -->
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">받으시는분</h5>
-                  <div class="col-md-12">
+                <h5 class="card-title">배송정보</h5>
+                  <div class="col-md-4">
                     <label for="inputName5" class="form-label">이름</label>
-                    <input type="text" name="get_name" class="form-control" id="inputName5" required>
-                  </div>
-                  <div class="col-md-12">
+                    <input type="hidden" name="buyer_id" class="form-control" id="buyer_id" value="<%=sessionId%>">
+                    <input type="text" name="buyer_name" class="form-control" id="buyer_name" value="<%=sessionName%>" placeholder="이름" required>
+                  </div><br>
+                  <div class="col-md-6">
                     <label for="inputName5" class="form-label">전화번호</label>
-                    <input type="text" name="get_phone" class="form-control" id="inputName5" required>
+                    <input type="text" name="buyer_tel" class="form-control" id="buyer_tel" placeholder="010-0000-0000" required>
+                  </div><br>
+                  
+                  <div class="col-6">
+                    <label for="inputName5" class="form-label">주소</label>
                   </div>
+
+                  <div class="col-6">
+                    <div class="input-group mb-2">
+                      <input type="text" class="form-control" id="sample4_postcode" placeholder="우편번호">
+                      <span class="input-group-text" id="basic-addon2"><input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"></span>
+                    </div>
+                  </div>
+
                   <div class="col-12">
-                    <label for="inputAddress5" class="form-label">주소</label>
-                    <input type="text" name="get_addr" class="form-control" id="inputAddres5s" placeholder="경상북도 경산시 하양읍" required>
+                    <input type="text" class="form-control" id="sample4_roadAddress" placeholder="도로명주소" >
+                    <input type="text" class="form-control" id="sample4_jibunAddress" placeholder="지번주소">
+                    <span id="guide" style="color:#999;display:none"></span>
+                    <input type="text" class="form-control" id="sample4_detailAddress" placeholder="상세주소">
+                    <input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
                   </div>
-                  <div class="col-12">
-                    <label for="inputAddress2" class="form-label">상세주소</label>
-                    <input type="text" name="get_addr_detail" class="form-control" id="inputAddress2" placeholder="아파트 동 호수" required>
-                  </div>
-                  <!-- <div class="col-md-12">
-                    <label for="inputState" class="form-label">배송 메모</label>
-                    <select id="inputState" class="form-select">
-                      <option selected>배송메모를 선택해 주세요.</option>
-                      <option>빠른 배송 부탁드립니다.</option>
-                      <option>배송 전 연락 바랍니다.</option>
-                    </select>
-                  </div> -->
               </div>
             </div>
   
@@ -91,7 +80,7 @@
                 <tbody>
                   <tr>
                     <th scope="row">상품가격</th>
-                    <td><%=sumPrice%></td>
+                    <td id="buyer_amount"><%=sumPrice%></td>
                   </tr>
                   <tr>
                     <th scope="row">배송비</th>
@@ -103,87 +92,14 @@
             </div>
           </div>
 
-          <!-- 결제방법 -->
-          <!-- <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">결제 방법</h5>
-
-              <form class="row g-3">
-                <div class="col-md-12">
-                  <label for="inputName5" class="form-label">Your Name</label>
-                  <input type="text" class="form-control" id="inputName5">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputEmail5" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="inputEmail5">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputPassword5" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="inputPassword5">
-                </div>
-                <div class="col-12">
-                  <label for="inputAddress5" class="form-label">Address</label>
-                  <input type="text" class="form-control" id="inputAddres5s" placeholder="1234 Main St">
-                </div>
-                <div class="col-12">
-                  <label for="inputAddress2" class="form-label">Address 2</label>
-                  <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputCity" class="form-label">City</label>
-                  <input type="text" class="form-control" id="inputCity">
-                </div>
-                <div class="col-md-4">
-                  <label for="inputState" class="form-label">State</label>
-                  <select id="inputState" class="form-select">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                  </select>
-                </div>
-                <div class="col-md-2">
-                  <label for="inputZip" class="form-label">Zip</label>
-                  <input type="text" class="form-control" id="inputZip">
-                </div>
-                <div class="col-12">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck">
-                    <label class="form-check-label" for="gridCheck">
-                      Check me out
-                    </label>
-                  </div>
-                </div>
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="reset" class="btn btn-secondary">Reset</button>
-                </div>
-              </form>
-
-            </div>
-          </div> -->
-
           <!-- 결제 -->
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">결제</h5>
 
-              <form class="row g-3" method="post">
-                <!-- <div class="col-12">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck">
-                    <label class="form-check-label" for="gridCheck">
-                      전체 동의
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck">
-                    <label class="form-check-label" for="gridCheck">
-                      구매조건 확인 및 결제진행에 동의
-                    </label>
-                  </div>
-                </div> -->
-              </form>
               <div class="text-center">
-                <button type="submit" id="purchase_btn" class="btn btn-primary">결제하기</button>
+                <button id="purchase_btn" class="btn btn-primary">결제하기</button>
+                <button id="cancel_btn" class="btn btn-primary">취소</button>
               </div>
 
             </div>
@@ -214,9 +130,22 @@
 
   <!-- 결제 API -->
   <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+
+  <!-- 다음 우편번호 API -->
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   
   <script>
     window.onload = function(){
+        const buyer_amount = document.getElementById('buyer_amount').value;
+        const buyer_id = document.getElementById('buyer_id').value;
+        const buyer_name = document.getElementById('buyer_name').value;
+        const buyer_tel = document.getElementById('buyer_tel').value;
+        const buyer_postcode = document.getElementById('sample4_postcode').value;
+        const buyer_roadAddr = document.getElementById('sample4_roadAddress').value;
+        const buyer_detailAddr = document.getElementById('sample4_detailAddress').value;
+        // console.log(buyer_id, buyer_name, buyer_tel);
+        
+        // 결제버튼
         $("#purchase_btn").click(function () {
           if (confirm("결제하시겠습니까?") == true) {
             var IMP = window.IMP; 
@@ -226,29 +155,101 @@
                   pay_method : 'card',
                   merchant_uid : 'merchant_' + new Date().getTime(),
                   name : '결제',
-                  amount : 1,
-                  buyer_email : '구매자 이메일',
-                  buyer_name : '구매자 이름',
-                  buyer_tel : '구매자 번호',
-                  buyer_addr : '구매자 주소',
-                  buyer_postcode : '구매자 주소',
+                  amount : buyer_amount, // 결제금액
+                  buyer_id : buyer_id,
+                  buyer_name : buyer_name,
+                  buyer_tel : buyer_tel,
+                  buyer_addr : buyer_roadAddr+" "+buyer_detailAddr,
+                  buyer_postcode : buyer_addr2,
                   m_redirect_url : 'redirect url'
               }, function(rsp) {
                   if (rsp.success) {
                       var msg = '결제가 완료되었습니다.';
-                      location.href='#';
+                      location.href='/profile/buyProduct';
                   } else {
                       var msg = '결제에 실패하였습니다.';
                       rsp.error_msg;
-                      
                   }
               });
           } else {
             return;
           };
         });
+
+        // 취소버튼
+        document.getElementById('cancel_btn').onclick = function(){
+          if(confirm("취소하시겠습니까?") == true){
+            window.history.back();
+          }else{
+            return;
+          }
+        }
       }
     </script>
+    <!-- <script>
+      function cancel(){
+          if(confirm("취소하시겠습니까?") == true){
+            window.history.back();
+          }else{
+            return;
+          }
+        }
+    </script> -->
+    <script>
+      // 다음 우편번호 API
+      function sample4_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
+                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var roadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 참고 항목 변수
 
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('sample4_postcode').value = data.zonecode;
+                document.getElementById("sample4_roadAddress").value = roadAddr;
+                document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+                
+                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+                if(roadAddr !== ''){
+                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                } else {
+                    document.getElementById("sample4_extraAddress").value = '';
+                }
+
+                var guideTextBox = document.getElementById("guide");
+                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                if(data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+
+                } else if(data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else {
+                    guideTextBox.innerHTML = '';
+                    guideTextBox.style.display = 'none';
+                }
+            }
+        }).open();
+    }
+    </script>
 </body>

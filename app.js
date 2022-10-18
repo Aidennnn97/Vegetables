@@ -57,7 +57,7 @@ app.use( // request를 통해 세션 접근 가능 ex) req.session
   })
 );
 
-// 전역 변수
+// 전역 변수 (로그인하면 세션정보를 변수에 저장)
 app.use(function (req, res, next) {
   if (req.session.user) {
     global.sessionId = req.session.user.sessionId;
