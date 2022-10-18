@@ -22,8 +22,9 @@
                     </div>
                     <div class="col-md-8">
                       <div class="card-body">
+                        <input type="hidden" name="cartPrdtNo" value="<%=el.CARTPRODUCT_NO%>">
                         <h6 class="card-title"><%=el.PRODUCT_NAME%></h6>
-                        <p class="card-text"><%=el.CARTPRODUCT_CNT%></p>
+                        <p class="card-text">수량: <%=el.CARTPRODUCT_CNT%></p>
                         <p class="card-text"><%=el.SUM_PRICE%>원</p>
                       </div>
                     </div>
@@ -39,11 +40,11 @@
                   <div class="col-md-4">
                     <label for="inputName5" class="form-label">이름</label>
                     <input type="hidden" name="buyer_id" class="form-control" id="buyer_id" value="<%=sessionId%>">
-                    <input type="text" name="buyer_name" class="form-control" id="buyer_name" value="<%=sessionName%>" placeholder="이름" required>
+                    <input type="text" name="buyer_name" class="form-control" id="buyer_name" value="<%=sessionName%>" placeholder="이름">
                   </div><br>
                   <div class="col-md-6">
                     <label for="inputName5" class="form-label">전화번호</label>
-                    <input type="text" name="buyer_tel" class="form-control" id="buyer_tel" placeholder="010-0000-0000" required>
+                    <input type="text" name="buyer_phone" class="form-control" id="buyer_tel">
                   </div><br>
                   
                   <div class="col-6">
@@ -52,16 +53,16 @@
 
                   <div class="col-6">
                     <div class="input-group mb-2">
-                      <input type="text" class="form-control" id="sample4_postcode" placeholder="우편번호">
+                      <input type="text" name="buyer_postcode" class="form-control" id="sample4_postcode" placeholder="우편번호">
                       <span class="input-group-text" id="basic-addon2"><input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"></span>
                     </div>
                   </div>
 
                   <div class="col-12">
-                    <input type="text" class="form-control" id="sample4_roadAddress" placeholder="도로명주소" >
-                    <input type="text" class="form-control" id="sample4_jibunAddress" placeholder="지번주소">
+                    <input type="text" class="form-control" name="buyer_addr" id="sample4_roadAddress" placeholder="도로명주소" >
+                    <input type="hidden" class="form-control" id="sample4_jibunAddress" placeholder="지번주소">
                     <span id="guide" style="color:#999;display:none"></span>
-                    <input type="text" class="form-control" id="sample4_detailAddress" placeholder="상세주소">
+                    <input type="text" class="form-control" name="buyer_addr_detail" id="sample4_detailAddress" placeholder="상세주소">
                     <input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
                   </div>
               </div>
@@ -80,7 +81,7 @@
                 <tbody>
                   <tr>
                     <th scope="row">상품가격</th>
-                    <td id="buyer_amount"><%=sumPrice%></td>
+                    <td><%=sumPrice%></td>
                   </tr>
                   <tr>
                     <th scope="row">배송비</th>
@@ -89,6 +90,7 @@
                 </tbody>
               </table><hr/>
               <span>총 결제금액</span>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;<span><%=sumPrice + 3000%>원</span> 
+              <input type="hidden" name="sumPrice" value="<%=sumPrice + 3000%>">
             </div>
           </div>
 
@@ -136,17 +138,16 @@
   
   <script>
     window.onload = function(){
-        const buyer_amount = document.getElementById('buyer_amount').value;
-        const buyer_id = document.getElementById('buyer_id').value;
-        const buyer_name = document.getElementById('buyer_name').value;
-        const buyer_tel = document.getElementById('buyer_tel').value;
-        const buyer_postcode = document.getElementById('sample4_postcode').value;
-        const buyer_roadAddr = document.getElementById('sample4_roadAddress').value;
-        const buyer_detailAddr = document.getElementById('sample4_detailAddress').value;
-        // console.log(buyer_id, buyer_name, buyer_tel);
-        
         // 결제버튼
         $("#purchase_btn").click(function () {
+          const sumPrice = $("input[name=sumPrice]").val();
+          const buyer_id = document.getElementById('buyer_id').value;
+          const buyer_name = document.getElementById('buyer_name').value;
+          const buyer_tel = document.getElementById('buyer_tel').value;
+          const buyer_postcode = document.getElementById('sample4_postcode').value;
+          const buyer_roadAddr = document.getElementById('sample4_roadAddress').value;
+          const buyer_detailAddr = document.getElementById('sample4_detailAddress').value;
+
           if (confirm("결제하시겠습니까?") == true) {
             var IMP = window.IMP; 
               IMP.init('imp52784676'); 
@@ -155,17 +156,41 @@
                   pay_method : 'card',
                   merchant_uid : 'merchant_' + new Date().getTime(),
                   name : '결제',
-                  amount : buyer_amount, // 결제금액
-                  buyer_id : buyer_id,
+                  amount : sumPrice, // 결제금액
+                  buyer_email : buyer_id,
                   buyer_name : buyer_name,
                   buyer_tel : buyer_tel,
                   buyer_addr : buyer_roadAddr+" "+buyer_detailAddr,
-                  buyer_postcode : buyer_addr2,
+                  buyer_postcode : buyer_postcode,
                   m_redirect_url : 'redirect url'
               }, function(rsp) {
                   if (rsp.success) {
                       var msg = '결제가 완료되었습니다.';
-                      location.href='/profile/buyProduct';
+
+                      // 여러상품구매시 상품배열
+                      var noArr = [];
+                      $("input[name=cartPrdtNo]").each(function(){
+                        noArr.push($(this).val());
+                      });
+
+
+                      fetch('http://localhost:3000/payment/buyProduct', {
+                        method: 'POST',
+                        cache: 'no-cache',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            cartProductNo: noArr,
+                            buyer_addr: buyer_roadAddr,
+                            buyer_addr_detail: buyer_detailAddr,
+                            buyer_phone: buyer_tel
+                        })
+                    }).then((response) => response.json()).then((data) => {
+                        console.log(data);
+                        alert(msg);
+                        location.href='/profile';
+                    });
                   } else {
                       var msg = '결제에 실패하였습니다.';
                       rsp.error_msg;
